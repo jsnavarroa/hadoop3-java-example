@@ -4,13 +4,13 @@ import org.apache.hadoop.conf.Configuration;
 
 public class Main {
 	
-
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		try {
 			//WordCount.main("biblia/input","biblia/p1");
 			//WordRelevance.main("biblia/input", "biblia/p1");
-			LetterWordCount.main("biblia/input", "biblia/p2");
+			//LetterWordCount.main("biblia/input", "biblia/p2");
+			WordCountByLetter.main("biblia/input", "biblia/p3");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

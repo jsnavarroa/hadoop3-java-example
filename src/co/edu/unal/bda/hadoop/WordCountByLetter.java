@@ -16,49 +16,41 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class WordCount {
+import co.edu.unal.bda.hadoop.reducer.IntSumReducer;
+import co.edu.unal.bda.hadoop.reducer.SumReducer;
 
-	private static final Logger log = LoggerFactory.getLogger(WordCount.class);
+public class WordCountByLetter {
 
-	public static class TokenizerMapper extends Mapper<Object, Text, Text, IntWritable> {
+	private static final Logger log = LoggerFactory.getLogger(WordCountByLetter.class);
+
+	public static class LetterWordMapper extends Mapper<Object, Text, TwoTextWritable, IntWritable> {
 
 		private final static IntWritable one = new IntWritable(1);
-		private Text word = new Text();
 
 		public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
+			TwoTextWritable reduceKey = new TwoTextWritable();
 			StringTokenizer itr = new StringTokenizer(value.toString());
+
 			while (itr.hasMoreTokens()) {
-				word.set(itr.nextToken());
-				context.write(word, one);
+				String word = itr.nextToken();
+				for (int i = 0; i < word.length(); i++) {
+					String letter = String.valueOf(word.charAt(i)).toLowerCase();
+					reduceKey.set(letter, word);
+					context.write(reduceKey, one);
+				}
 			}
-		}
-	}
-
-	public static class IntSumReducer extends Reducer<Text, IntWritable, Text, IntWritable> {
-		private IntWritable result = new IntWritable();
-
-		public void reduce(Text key, Iterable<IntWritable> values, Context context)
-				throws IOException, InterruptedException {
-			int sum = 0;
-			for (IntWritable val : values) {
-				sum += val.get();
-			}
-			result.set(sum);
-			context.write(key, result);
 		}
 	}
 
 	static void main(String input, String output) throws Exception {
-		Configuration conf = new Configuration();
-		conf.set("fs.defaultFS", "hdfs://localhost:9800");
-		conf.set("fs.hdfs.impl", org.apache.hadoop.hdfs.DistributedFileSystem.class.getName());
+		Configuration conf = Main.getConfiguration();
 
 		Job job = Job.getInstance(conf, "word count");
-		job.setJarByClass(WordCount.class);
-		job.setMapperClass(TokenizerMapper.class);
-		job.setCombinerClass(IntSumReducer.class);
-		job.setReducerClass(IntSumReducer.class);
-		job.setOutputKeyClass(Text.class);
+		job.setJarByClass(WordCountByLetter.class);
+		job.setMapperClass(LetterWordMapper.class);
+		job.setReducerClass(SumReducer.class);
+		
+		job.setOutputKeyClass(TwoTextWritable.class);
 		job.setOutputValueClass(IntWritable.class);
 
 		// Overwrite output
