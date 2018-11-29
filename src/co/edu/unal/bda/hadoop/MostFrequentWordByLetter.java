@@ -13,7 +13,7 @@ import org.slf4j.LoggerFactory;
 import co.edu.unal.bda.hadoop.mapper.LetterWordMapper;
 import co.edu.unal.bda.hadoop.reducer.MostFrequentReducer;
 
-public class MostFrequentWordByLetter {
+public class MostFrequentWordByLetter{
 
 	private static final Logger log = LoggerFactory.getLogger(MostFrequentWordByLetter.class);
 
