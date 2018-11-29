@@ -1,4 +1,4 @@
-package co.edu.unal.bda.hadoop;
+package co.edu.unal.bda.hadoop.writable;
 
 import java.io.DataInput;
 import java.io.DataOutput;

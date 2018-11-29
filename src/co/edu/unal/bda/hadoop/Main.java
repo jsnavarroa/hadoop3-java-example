@@ -10,7 +10,7 @@ public class Main {
 			//WordCount.main("biblia/input","biblia/p1");
 			//WordRelevance.main("biblia/input", "biblia/p1");
 			//LetterWordCount.main("biblia/input", "biblia/p2");
-			WordCountByLetter.main("biblia/input", "biblia/p3");
+			MostFrequentWordByLetter.main("biblia/input", "biblia/p3");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
