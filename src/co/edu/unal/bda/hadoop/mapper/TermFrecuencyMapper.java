@@ -14,8 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class TermFrecuencyMapper extends Mapper<Object, Text, Text, FloatWritable> {
-
-	private static final Logger log = LoggerFactory.getLogger(TermFrecuencyMapper.class);
+	
 	private Text word = new Text();
 
 	public void map(Object key, Text value, Context context) throws IOException, InterruptedException {
